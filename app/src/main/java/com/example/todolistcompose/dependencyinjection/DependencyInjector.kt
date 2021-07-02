@@ -2,6 +2,11 @@ package com.example.todolistcompose.dependencyinjection
 
 import android.content.Context
 import androidx.room.Room
+import com.example.todolistcompose.data.database.AppDatabase
+import com.example.todolistcompose.data.database.dbmapper.DbMapper
+import com.example.todolistcompose.data.database.dbmapper.DbMapperImpl
+import com.example.todolistcompose.data.repository.Repository
+import com.example.todolistcompose.data.repository.RepositoryImpl
 
 class DependencyInjector(applicationContext: Context) {
 

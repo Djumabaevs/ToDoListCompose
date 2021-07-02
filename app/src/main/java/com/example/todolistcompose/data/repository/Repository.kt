@@ -1,6 +1,8 @@
 package com.example.todolistcompose.data.repository
 
 import androidx.lifecycle.LiveData
+import com.example.todolistcompose.domain.model.ColorModel
+import com.example.todolistcompose.domain.model.NoteModel
 
 
 interface Repository {

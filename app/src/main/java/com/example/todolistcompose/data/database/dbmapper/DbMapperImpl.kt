@@ -1,5 +1,10 @@
 package com.example.todolistcompose.data.database.dbmapper
 
+import com.example.todolistcompose.data.database.model.ColorDbModel
+import com.example.todolistcompose.data.database.model.NoteDbModel
+import com.example.todolistcompose.domain.model.ColorModel
+import com.example.todolistcompose.domain.model.NoteModel
+
 class DbMapperImpl : DbMapper {
 
     override fun mapNotes(
