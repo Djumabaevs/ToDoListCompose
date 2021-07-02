@@ -1,6 +1,7 @@
 package com.example.todolistcompose
 
 import android.app.Application
+import com.example.todolistcompose.dependencyinjection.DependencyInjector
 
 class ToDoApplication: Application() {
 
