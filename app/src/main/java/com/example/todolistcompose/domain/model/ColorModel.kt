@@ -1,5 +1,7 @@
 package com.example.todolistcompose.domain.model
 
+import com.example.todolistcompose.data.database.model.ColorDbModel
+
 data class ColorModel(
     val id: Long,
     val name: String,
