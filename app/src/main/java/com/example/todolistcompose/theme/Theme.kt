@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 
 private val LightThemeColors = lightColors(
     primary = rwGreen,
@@ -20,7 +21,7 @@ private val DarkThemeColors = darkColors(
     primary = Color(0xFF00A055),
     primaryVariant = Color(0xFF00F884),
     secondary = rwRed,
-    onPrimary = Color.White,
+    onPrimary = White,
 )
 
 @Composable
