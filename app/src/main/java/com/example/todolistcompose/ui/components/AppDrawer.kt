@@ -20,6 +20,15 @@ import com.example.todolistcompose.theme.JetNotesTheme
 import com.example.todolistcompose.theme.JetNotesThemeSettings
 
 
+
+@Preview
+@Composable
+fun AppDrawerHeaderPreview() {
+    JetNotesTheme {
+        AppDrawerHeader()
+    }
+}
+
 @Composable
 private fun ScreenNavigationButton(
     icon: ImageVector,
