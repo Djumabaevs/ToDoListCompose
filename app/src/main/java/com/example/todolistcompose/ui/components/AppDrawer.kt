@@ -16,8 +16,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todolistcompose.routing.JetNotesRouter
 import com.example.todolistcompose.routing.Screen
 import com.example.todolistcompose.theme.JetNotesTheme
+import com.example.todolistcompose.theme.JetNotesThemeSettings
+
+
+@Preview
+@Composable
+fun ScreenNavigationButtonPreview() {
+    JetNotesTheme {
+        ScreenNavigationButton(
+            icon = Icons.Filled.Home,
+            label = "Notes",
+            isSelected = true,
+            onClick = { }
+        )
+    }
+}
+
 
 @Composable
 private fun LightDarkThemeItem() {
