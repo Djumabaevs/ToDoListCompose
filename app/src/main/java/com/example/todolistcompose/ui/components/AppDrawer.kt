@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,23 @@ import com.example.todolistcompose.theme.JetNotesTheme
 import com.example.todolistcompose.theme.JetNotesThemeSettings
 
 
+@Composable
+private fun AppDrawerHeader() {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            imageVector = Icons.Filled.Menu,
+            contentDescription = "Drawer Header Icon",
+            colorFilter = ColorFilter
+                .tint(MaterialTheme.colors.onSurface),
+            modifier = Modifier.padding(16.dp)
+        )
+        Text(
+            text = "JetNotes",
+            modifier = Modifier
+                .align(alignment = Alignment.CenterVertically)
+        )
+    }
+}
 
 @Preview
 @Composable
