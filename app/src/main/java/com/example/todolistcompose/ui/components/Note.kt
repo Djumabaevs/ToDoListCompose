@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todolistcompose.domain.model.NoteModel
+import com.example.todolistcompose.util.fromHex
 
 
 @ExperimentalMaterialApi
