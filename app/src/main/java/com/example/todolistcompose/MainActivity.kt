@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.todolistcompose.routing.JetNotesRouter
 import com.example.todolistcompose.routing.Screen
 import com.example.todolistcompose.theme.JetNotesTheme
+import com.example.todolistcompose.ui.screens.NotesScreen
+import com.example.todolistcompose.ui.screens.SaveNoteScreen
 import com.example.todolistcompose.ui.theme.ToDoListComposeTheme
 import com.example.todolistcompose.viewmodel.MainViewModel
 import com.example.todolistcompose.viewmodel.MainViewModelFactory

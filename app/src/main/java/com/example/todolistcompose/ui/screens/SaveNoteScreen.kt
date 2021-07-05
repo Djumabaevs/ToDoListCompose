@@ -1,5 +1,6 @@
 package com.example.todolistcompose.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,11 +20,119 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todolistcompose.R
 import com.example.todolistcompose.domain.model.ColorModel
+import com.example.todolistcompose.domain.model.NEW_NOTE_ID
 import com.example.todolistcompose.domain.model.NoteModel
+import com.example.todolistcompose.routing.JetNotesRouter
+import com.example.todolistcompose.routing.Screen
 import com.example.todolistcompose.ui.components.NoteColor
 import com.example.todolistcompose.util.fromHex
+import com.example.todolistcompose.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
+
+@ExperimentalMaterialApi
+@Composable
+fun SaveNoteScreen(viewModel: MainViewModel) {
+
+    val noteEntry: NoteModel by viewModel.noteEntry
+        .observeAsState(NoteModel())
+
+    val colors: List<ColorModel> by viewModel.colors
+        .observeAsState(listOf())
+
+    val bottomDrawerState: BottomDrawerState =
+        rememberBottomDrawerState(BottomDrawerValue.Closed)
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val moveNoteToTrashDialogShownState: MutableState<Boolean> = rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    BackHandler(onBack = {
+        if (bottomDrawerState.isOpen) {
+            coroutineScope.launch { bottomDrawerState.close() }
+        } else {
+            JetNotesRouter.navigateTo(Screen.Notes)
+        }
+    })
+
+    Scaffold(
+        topBar = {
+            val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
+            SaveNoteTopAppBar(
+                isEditingMode = isEditingMode,
+                onBackClick = {
+                    JetNotesRouter.navigateTo(Screen.Notes)
+                },
+                onSaveNoteClick = {
+                    viewModel.saveNote(noteEntry)
+                },
+                onOpenColorPickerClick = {
+                    coroutineScope.launch { bottomDrawerState.open() }
+                },
+                onDeleteNoteClick = {
+                    moveNoteToTrashDialogShownState.value = true
+                }
+            )
+        },
+        content = {
+            BottomDrawer(
+                drawerState = bottomDrawerState,
+                drawerContent = {
+                    ColorPicker(
+                        colors = colors,
+                        onColorSelect = { color ->
+                            val newNoteEntry = noteEntry.copy(color = color)
+                            viewModel.onNoteEntryChange(newNoteEntry)
+                        }
+                    )
+                },
+                content = {
+                    SaveNoteContent(
+                        note = noteEntry,
+                        onNoteChange = { updateNoteEntry ->
+                            viewModel.onNoteEntryChange(updateNoteEntry)
+                        }
+                    )
+                }
+            )
+
+            if (moveNoteToTrashDialogShownState.value) {
+                AlertDialog(
+                    onDismissRequest = {
+                        moveNoteToTrashDialogShownState.value = false
+                    },
+                    title = {
+                        Text("Move note to the trash?")
+                    },
+                    text = {
+                        Text(
+                            "Are you sure you want to " +
+                                    "move this note to the trash?"
+                        )
+                    },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            viewModel.moveNoteToTrash(noteEntry)
+                        }) {
+                            Text("Confirm")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            moveNoteToTrashDialogShownState.value = false
+                        }) {
+                            Text("Dismiss")
+                        }
+                    }
+                )
+            }
+        }
+    )
+}
 
 @Composable
 private fun SaveNoteTopAppBar(
