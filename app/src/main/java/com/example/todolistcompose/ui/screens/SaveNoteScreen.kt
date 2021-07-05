@@ -4,6 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.todolistcompose.domain.model.NoteModel
 
+
+@Preview
+@Composable
+fun NoteCheckOptionPreview() {
+    NoteCheckOption(false) {}
+}
+
 @Preview
 @Composable
 fun SaveNoteContentPreview() {
