@@ -5,6 +5,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.todolistcompose.domain.model.NoteModel
 
 
+
+
+@Preview
+@Composable
+fun ColorItemPreview() {
+    ColorItem(ColorModel.DEFAULT) {}
+}
+
+@Preview
+@Composable
+fun ColorPickerPreview() {
+    ColorPicker(
+        colors = listOf(
+            ColorModel.DEFAULT,
+            ColorModel.DEFAULT,
+            ColorModel.DEFAULT
+        )
+    ) { }
+}
+
+@Preview
+@Composable
+fun PickedColorPreview() {
+    PickedColor(ColorModel.DEFAULT)
+}
+
+@Preview
+@Composable
+fun SaveNoteTopAppBarPreview() {
+    SaveNoteTopAppBar(
+        isEditingMode = true,
+        onBackClick = {},
+        onSaveNoteClick = {},
+        onOpenColorPickerClick = {},
+        onDeleteNoteClick = {}
+    )
+}
+
 @Preview
 @Composable
 fun NoteCheckOptionPreview() {
