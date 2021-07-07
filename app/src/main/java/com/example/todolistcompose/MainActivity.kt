@@ -48,7 +48,7 @@ private fun MainActivityScreen(viewModel: MainViewModel) {
         when (JetNotesRouter.currentScreen) {
             is Screen.Notes -> NotesScreen(viewModel)
             is Screen.SaveNote -> SaveNoteScreen(viewModel)
-            is Screen.Trash -> TrashScreen(viewModel)
+        //    is Screen.Trash -> TrashScreen(viewModel)
         }
     }
 }
