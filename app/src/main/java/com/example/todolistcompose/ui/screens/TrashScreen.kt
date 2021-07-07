@@ -7,13 +7,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.runtime.R
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import com.example.todolistcompose.domain.model.NoteModel
+import com.example.todolistcompose.routing.Screen
+import com.example.todolistcompose.ui.components.AppDrawer
 import com.example.todolistcompose.ui.components.Note
 import com.example.todolistcompose.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
+private const val NO_DIALOG = 1
+private const val RESTORE_NOTES_DIALOG = 2
+private const val PERMANENTLY_DELETE_DIALOG = 3
 
 @Composable
 @ExperimentalMaterialApi
