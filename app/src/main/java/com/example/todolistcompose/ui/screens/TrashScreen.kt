@@ -7,12 +7,99 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.runtime.R
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.painterResource
 import com.example.todolistcompose.domain.model.NoteModel
+import com.example.todolistcompose.ui.components.Note
+import com.example.todolistcompose.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 
+@Composable
+@ExperimentalMaterialApi
+fun TrashScreen(viewModel: MainViewModel) {
 
+    val notesInThrash: List<NoteModel> by viewModel.notesInTrash
+        .observeAsState(listOf())
 
+    val selectedNotes: List<NoteModel> by viewModel.selectedNotes
+        .observeAsState(listOf())
+
+    val dialogState: MutableState<Int> = rememberSaveable { mutableStateOf(NO_DIALOG) }
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+
+    val coroutineScope = rememberCoroutineScope()
+
+    Scaffold(
+        topBar = {
+            val areActionsVisible = selectedNotes.isNotEmpty()
+            TrashTopAppBar(
+                onNavigationIconClick = {
+                    coroutineScope.launch { scaffoldState.drawerState.open() }
+                },
+                onRestoreNotesClick = { dialogState.value = RESTORE_NOTES_DIALOG },
+                onDeleteNotesClick = { dialogState.value = PERMANENTLY_DELETE_DIALOG },
+                areActionsVisible = areActionsVisible
+            )
+        },
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            AppDrawer(
+                currentScreen = Screen.Trash,
+                closeDrawerAction = {
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
+            )
+        },
+        content = {
+            Content(
+                notes = notesInThrash,
+                onNoteClick = { viewModel.onNoteSelected(it) },
+                selectedNotes = selectedNotes
+            )
+
+            val dialog = dialogState.value
+            if (dialog != NO_DIALOG) {
+                val confirmAction: () -> Unit = when (dialog) {
+                    RESTORE_NOTES_DIALOG -> {
+                        {
+                            viewModel.restoreNotes(selectedNotes)
+                            dialogState.value = NO_DIALOG
+                        }
+                    }
+                    PERMANENTLY_DELETE_DIALOG -> {
+                        {
+                            viewModel.permanentlyDeleteNotes(selectedNotes)
+                            dialogState.value = NO_DIALOG
+                        }
+                    }
+                    else -> {
+                        {
+                            dialogState.value = NO_DIALOG
+                        }
+                    }
+                }
+
+                AlertDialog(
+                    onDismissRequest = { dialogState.value = NO_DIALOG },
+                    title = { Text(mapDialogTitle(dialog)) },
+                    text = { Text(mapDialogText(dialog)) },
+                    confirmButton = {
+                        TextButton(onClick = confirmAction) {
+                            Text("Confirm")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { dialogState.value = NO_DIALOG }) {
+                            Text("Dismiss")
+                        }
+                    }
+                )
+            }
+        }
+    )
+}
 
 @Composable
 private fun TrashTopAppBar(
