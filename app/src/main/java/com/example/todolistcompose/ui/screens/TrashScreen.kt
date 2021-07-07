@@ -2,13 +2,55 @@ package com.example.todolistcompose.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
+import androidx.compose.ui.res.painterResource
 import com.example.todolistcompose.domain.model.NoteModel
 
+
+
+
+
+@Composable
+private fun TrashTopAppBar(
+    onNavigationIconClick: () -> Unit,
+    onRestoreNotesClick: () -> Unit,
+    onDeleteNotesClick: () -> Unit,
+    areActionsVisible: Boolean
+) {
+    TopAppBar(
+        title = { Text(text = "Trash", color = MaterialTheme.colors.onPrimary) },
+        navigationIcon = {
+            IconButton(onClick = onNavigationIconClick) {
+                Icon(
+                    imageVector = Icons.Filled.List,
+                    contentDescription = "Drawer Button"
+                )
+            }
+        },
+        actions = {
+            if (areActionsVisible) {
+                IconButton(onClick = onRestoreNotesClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_restore_from_trash_24),
+                        contentDescription = "Restore Notes Button",
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
+                IconButton(onClick = onDeleteNotesClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_delete_forever_24),
+                        contentDescription = "Delete Notes Button",
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
+            }
+        }
+    )
+}
 
 @Composable
 @ExperimentalMaterialApi
